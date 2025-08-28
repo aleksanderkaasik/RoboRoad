@@ -1,1 +1,1 @@
-<img src="{{ url('/proxy-stream') }}" alt="Proxied Stream" />
+<img src="{{ url('/proxy-stream/' . $id) }}" alt="Proxied Stream" />
