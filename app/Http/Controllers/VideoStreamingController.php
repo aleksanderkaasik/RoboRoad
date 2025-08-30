@@ -5,30 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use App\Models\RoboRoadNodes;
 
 class VideoStreamingController extends Controller
 {
+    public function Index() {
+        //$NodeIds = RoboRoadNodes::pluck('NodeID');
+        $Nodes=RoboRoadNodes::select('NodeId', 'NodeName')->get();
+        return view('Index', compact('Nodes'));
+    }
+
     public function ViewStream($id) {
-
-        $TestList = [1, 2];
-
-        if (in_array($id, $TestList)){
-            return view('VideoStream' , compact('id'));
-        }
-        return redirect('/');
+        $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeId', $id)->value('NodeId');
+        if ( !$checkNodeIdExist ) { return redirect('/'); }
+        return view('VideoStream', compact('id'));
     }
 
     public function ProxiedVideoStream($id)
     {
-        switch ($id) {
-            case '1':
-                $streamUrl= 'http://pi0.camera.loc:5000/video_feed';
-                break;
-            case '2':
-                $streamUrl='http://pi1.camera.loc:5000/video_feed';
-            default:
-                break;
-        }
+        $NodeAddress=RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        
+        $streamUrl='http://' . $NodeAddress . '/video_feed';
 
         $response = Http::withOptions([
             'stream' => true,

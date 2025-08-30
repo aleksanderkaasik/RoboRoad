@@ -8,12 +8,10 @@
 <body>
     <nav>
         <ul>
-            <li><a href="/stream/1">Stream1</a></li>
-            <li><a href="/stream/2">Stream2</a></li>
-            <li><a href="/stream/3">Stream3</a></li>
-            <li><a href="/stream/4">Stream4</a></li>
-            <li><a href="/stream/5">Stream5</a></li>
+            <?php foreach ($Nodes as $Node) { ?>
+                <li><a href="/stream/{{$Node['NodeId']}}">{{ $Node['NodeName'] }}</a></li>
+            <?php } ?>
         </ul>
     </nav>
 </body>
-</html>
+</html>   
