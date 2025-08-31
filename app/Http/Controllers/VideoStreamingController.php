@@ -15,6 +15,18 @@ class VideoStreamingController extends Controller
         return view('Index', compact('Nodes'));
     }
 
+    public function Info($id) {
+        $nodeName = RoboRoadNodes::where('NodeId', $id)->value('NodeName');
+        return view('SystemInfoPage', compact('id', 'nodeName') );
+    }
+
+    public function SystemInfo($id)
+    {
+        $nodeAddress = RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        $response = Http::get("http://$nodeAddress/system_info");
+        return $response->json();
+    }
+
     public function ViewStream($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeId', $id)->value('NodeId');
         if ( !$checkNodeIdExist ) { return redirect('/'); }
