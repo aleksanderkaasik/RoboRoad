@@ -11,33 +11,33 @@ class RoboRoadController extends Controller
 {
     public function Index() {
         //$NodeIds = RoboRoadNodes::pluck('NodeID');
-        $Nodes=RoboRoadNodes::select('NodeId', 'NodeName')->get();
+        $Nodes=RoboRoadNodes::select('NodeID', 'NodeName')->get();
         return view('Index', compact('Nodes'));
     }
 
     public function Info($id) {
-        $nodeName = RoboRoadNodes::where('NodeId', $id)->value('NodeName');
+        $nodeName = RoboRoadNodes::where('NodeID', $id)->value('NodeName');
         return view('SystemInfoPage', compact('id', 'nodeName') );
     }
 
     public function SystemInfo($id)
     {
-        $nodeAddress = RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         $response = Http::get("http://$nodeAddress/system_info");
         return $response->json();
     }
 
     public function ViewStream($id) {
-        $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeId', $id)->value('NodeId');
+        $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
         if ( !$checkNodeIdExist ) { return redirect('/'); }
-        $NodeAddress=RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         $streamUrl='http://' . $NodeAddress . '/video_feed';
         return view('VideoStream', compact('id', 'streamUrl'));
     }
 
     public function ProxiedVideoStream($id)
     {
-        $NodeAddress=RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         
         $streamUrl='http://' . $NodeAddress . '/video_feed';
 
@@ -59,5 +59,5 @@ class RoboRoadController extends Controller
             'Cache-Control' => 'no-cache',
             'Connection' => 'keep-alive',
         ]);
-    }
+    } 
 }
