@@ -30,7 +30,9 @@ class VideoStreamingController extends Controller
     public function ViewStream($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeId', $id)->value('NodeId');
         if ( !$checkNodeIdExist ) { return redirect('/'); }
-        return view('VideoStream', compact('id'));
+        $NodeAddress=RoboRoadNodes::where('NodeId', $id)->value('NodeAddress');
+        $streamUrl='http://' . $NodeAddress . '/video_feed';
+        return view('VideoStream', compact('id', 'streamUrl'));
     }
 
     public function ProxiedVideoStream($id)
