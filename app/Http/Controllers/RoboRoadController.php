@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Models\RoboRoadNodes;
 
-class VideoStreamingController extends Controller
+class RoboRoadController extends Controller
 {
     public function Index() {
         //$NodeIds = RoboRoadNodes::pluck('NodeID');
