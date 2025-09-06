@@ -2,6 +2,9 @@
     Loading system info...
 </div>
 
+<a href="/"><button>Home</button></a>
+<a href="/stream/{{ $id }}"><button>Stream</button></a>
+
 <script>
     function updateSystemInfo() {
         fetch(`/system-info/{{ $id }}`)
