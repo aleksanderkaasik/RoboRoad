@@ -42,9 +42,7 @@ class RoboRoadController extends Controller
 
     public function getConfirmationDeletionPage($nodeId)
     {
-        $node = (RoboRoadNodes::where('NodeId', $nodeId)->get());
-
-        $node = $node[0];
+        $node = RoboRoadNodes::find($nodeId);
 
         return view('ConfirmationDeletion', compact('node'));
     }
@@ -101,7 +99,7 @@ class RoboRoadController extends Controller
 
     public function deleteNode($nodeId)
     {
-        $node = RoboRoadNodes::where('NodeId', $nodeId);        
+        $node = RoboRoadNodes::find($nodeId);
 
         $node->delete();
 
