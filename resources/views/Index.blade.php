@@ -11,7 +11,10 @@
 
         <ul>
             <?php foreach ($nodes as $node) { ?>
-                <li><a href="{{ route('nodes.stream', $node['NodeId']) }}">{{ $node['NodeName'] }}</a></li>
+                <li>
+                    <a href="{{ route('nodes.stream', $node['NodeId']) }}">{{ $node['NodeName'] }}</a>
+                    <a href="{{ route('nodes.delete', $node['NodeId']) }}"><button>delete</button></a>
+                </li>
             <?php } ?>
         </ul>
     </nav>
