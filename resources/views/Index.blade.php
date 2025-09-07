@@ -14,6 +14,7 @@
                 <li>
                     <a href="{{ route('nodes.stream', $node['NodeId']) }}">{{ $node['NodeName'] }}</a>
                     <a href="{{ route('nodes.delete', $node['NodeId']) }}"><button>delete</button></a>
+                    <a href="{{ route('nodes.update', $node['NodeId']) }}"><button>modify</button></a>
                 </li>
             <?php } ?>
         </ul>

@@ -46,7 +46,13 @@ class RoboRoadController extends Controller
 
         return view('ConfirmationDeletion', compact('node'));
     }
+    
+    public function getEditNodePage($nodeId)
+    {
+        $node = RoboRoadNodes::find($nodeId);
 
+        return view('Edit', compact('node'));
+    }
     #-------- API calls --------   
 
     public function getProxiedStream($nodeId)
@@ -105,5 +111,14 @@ class RoboRoadController extends Controller
 
         return redirect()->route('nodes.index')->with('success', 'node deleted successfully');
     }
-    
+
+    public function updateNode(Request $request, $nodeId)
+    {
+        $node = RoboRoadNodes::find($nodeId);
+        $node['NodeName'] = $request['NodeName'];
+        $node['NodeAddress'] = $request['NodeAddress'];
+        $node->save();
+
+        return redirect()->route('nodes.index')->with('success', 'Item updated successfully');
+    }
 }
