@@ -13,25 +13,25 @@ class RoboRoadController extends Controller
     #-------- Web pages --------
 
     public function Index() {
-        //$NodeIds = RoboRoadNodes::pluck('NodeID');
-        $nodes = RoboRoadNodes::select('NodeID', 'NodeName')->get();
+        //$NodeIds = RoboRoadNodes::pluck('NodeId');
+        $nodes = RoboRoadNodes::select('NodeId', 'NodeName')->get();
 
         return view('Index', compact('nodes'));
     }
 
     public function getStreamPreviewPage($nodeId) {
-        $doesNodeExists = (bool)RoboRoadNodes::where('NodeID', $nodeId)->value('NodeID');
+        $doesNodeExists = (bool)RoboRoadNodes::where('NodeId', $nodeId)->value('NodeId');
 
         if ( !$doesNodeExists  ) { return redirect(route('nodes.index')); }
 
-        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
         $streamUrl = 'http://' . $nodeAddress  . '/video_feed';
 
         return view('VideoStream', compact('nodeId', 'streamUrl'));
     }
 
     public function getNodeStatusPage($nodeId) {
-        $nodeName = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeName');
+        $nodeName = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeName');
 
         return view('SystemInfoPage', compact('nodeId', 'nodeName') );
     }
@@ -44,7 +44,7 @@ class RoboRoadController extends Controller
 
     public function getProxiedStream($nodeId)
     {
-        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
         
         $streamUrl = 'http://' . $nodeAddress . '/video_feed';
 
@@ -70,7 +70,7 @@ class RoboRoadController extends Controller
 
     public function getNodeSystemInfo($nodeId)
     {
-        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
         $response = Http::get("http://$nodeAddress/system_info");
         return $response->json();
     }

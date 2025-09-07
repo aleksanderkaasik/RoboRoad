@@ -8,5 +8,5 @@ use Illuminate\Support\Str;
 class RoboRoadNodes extends Model
 {
     protected $table = 'RoboRoadNodes';
-    protected $fillable = ['NodeID', 'NodeName', 'NodeAddress'];
+    protected $fillable = ['NodeId', 'NodeName', 'NodeAddress'];
 }
