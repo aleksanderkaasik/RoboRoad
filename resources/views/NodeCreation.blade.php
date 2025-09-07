@@ -8,12 +8,12 @@
    <input type="text" id="nodeAddress" placeholder="Type node address">
 </div>
 
-</div>
-
 <div>
    <p>git clone https://github.com/aleksanderkaasik/RoboRoad-Node.git</p>
    <p>sudo bash ./RoboRoad-Node/installation.sh {{ env('APP_Domain') }}  <span id="nodeNamePreview">NodeName</span> <span id="nodeAddressPreview">NodeAddress</span></p>
 </div>
+
+<a href="{{ route('nodes.index') }}"><button>Home</button></a>
 
 <script>
    const nodeName = document.getElementById('nodeName');
