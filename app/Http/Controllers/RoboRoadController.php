@@ -30,6 +30,10 @@ class RoboRoadController extends Controller
         $streamUrl='http://' . $NodeAddress . '/video_feed';
         return view('VideoStream', compact('id', 'streamUrl'));
     }
+    
+    public function NodeCreate(){
+        return view('NodeCreation');
+    }
 
     #-------- API calls --------   
 
@@ -65,4 +69,20 @@ class RoboRoadController extends Controller
         $response = Http::get("http://$nodeAddress/system_info");
         return $response->json();
     }
+
+    public function NodeCreating(Request $request)
+    {
+        $RoboRoadNodes = RoboRoadNodes::create([
+            'NodeName'=> $request['NodeName'],
+            'NodeAddress'=> $request['NodeAddress']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'RoboRoadNodes'    => $RoboRoadNodes,
+            'message' => 'User created successfully',
+            
+        ], 201);
+    }
+    
 }

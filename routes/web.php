@@ -5,3 +5,4 @@ use App\Http\Controllers\RoboRoadController;
 
 Route::get('/', [RoboRoadController::class, 'Index'])->name('nodes.menu');
 Route::get('/stream/{id}', [RoboRoadController::class, 'ViewStream'])->name('nodes.preview');
+Route::get('/add', [RoboRoadController::class, 'NodeCreate'])->name('nodes.add');
