@@ -7,11 +7,11 @@
 </head>
 <body>
     <nav>
-        <a href="{{ route('nodes.add') }}"><button>Add mode</button></a>
+        <a href="{{ route('nodes.create') }}"><button>Add mode</button></a>
 
         <ul>
             <?php foreach ($Nodes as $Node) { ?>
-                <li><a href="{{ route('nodes.preview', $Node['NodeID']) }}">{{ $Node['NodeName'] }}</a></li>
+                <li><a href="{{ route('nodes.stream', $Node['NodeID']) }}">{{ $Node['NodeName'] }}</a></li>
             <?php } ?>
         </ul>
     </nav>
