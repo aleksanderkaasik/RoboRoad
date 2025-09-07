@@ -18,12 +18,12 @@ class RoboRoadController extends Controller
         return view('Index', compact('Nodes'));
     }
 
-    public function Info($id) {
+    public function getNodeStatusPage($id) {
         $nodeName = RoboRoadNodes::where('NodeID', $id)->value('NodeName');
         return view('SystemInfoPage', compact('id', 'nodeName') );
     }
 
-    public function ViewStream($id) {
+    public function getStreamPreviewPage($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
         if ( !$checkNodeIdExist ) { return redirect(route('nodes.index')); }
         $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
@@ -31,7 +31,7 @@ class RoboRoadController extends Controller
         return view('VideoStream', compact('id', 'streamUrl'));
     }
     
-    public function NodeCreate(){
+    public function getCreateNodePage(){
         return view('NodeCreation');
     }
 
@@ -63,14 +63,14 @@ class RoboRoadController extends Controller
         ]);
     } 
 
-    public function SystemInfo($id)
+    public function getNodeSystemInfo($id)
     {
         $nodeAddress = RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         $response = Http::get("http://$nodeAddress/system_info");
         return $response->json();
     }
 
-    public function NodeCreating(Request $request)
+    public function createNode(Request $request)
     {
         $RoboRoadNodes = RoboRoadNodes::create([
             'NodeName'=> $request['NodeName'],
