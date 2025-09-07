@@ -105,11 +105,32 @@ class RoboRoadController extends Controller
 
     public function deleteNode($nodeId)
     {
-        $node = RoboRoadNodes::find($nodeId);
+        try {
+            $node = RoboRoadNodes::find($nodeId);
+        } catch (\Throwable $error) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while getting node or having database connection issue',
+                'error'   => $error->getMessage()
+            ], 500);
+        }
+
+        if (!$node) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Couldn\'t find nodd',
+            ], 404);
+        }
 
         $node->delete();
 
-        return redirect()->route('nodes.index')->with('success', 'node deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'node deleted successfully',
+            
+        ], 200);
+
+        //return redirect()->route('nodes.index')->with('success', 'node deleted successfully');
     }
 
     public function updateNode(Request $request, $nodeId)
