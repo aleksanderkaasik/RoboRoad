@@ -9,6 +9,9 @@ use App\Models\RoboRoadNodes;
 
 class RoboRoadController extends Controller
 {
+
+    #-------- Web pages --------
+
     public function Index() {
         //$NodeIds = RoboRoadNodes::pluck('NodeID');
         $Nodes=RoboRoadNodes::select('NodeID', 'NodeName')->get();
@@ -20,13 +23,6 @@ class RoboRoadController extends Controller
         return view('SystemInfoPage', compact('id', 'nodeName') );
     }
 
-    public function SystemInfo($id)
-    {
-        $nodeAddress = RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
-        $response = Http::get("http://$nodeAddress/system_info");
-        return $response->json();
-    }
-
     public function ViewStream($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
         if ( !$checkNodeIdExist ) { return redirect(route('nodes.menu')); }
@@ -34,6 +30,8 @@ class RoboRoadController extends Controller
         $streamUrl='http://' . $NodeAddress . '/video_feed';
         return view('VideoStream', compact('id', 'streamUrl'));
     }
+
+    #-------- API calls --------   
 
     public function ProxiedVideoStream($id)
     {
@@ -60,4 +58,11 @@ class RoboRoadController extends Controller
             'Connection' => 'keep-alive',
         ]);
     } 
+
+    public function SystemInfo($id)
+    {
+        $nodeAddress = RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
+        $response = Http::get("http://$nodeAddress/system_info");
+        return $response->json();
+    }
 }
