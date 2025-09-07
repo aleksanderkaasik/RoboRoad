@@ -2,5 +2,5 @@
 
 <br>
 
-<a href="/"><button>Home</button></a>
-<a href="/info/{{ $id }}"><button>info</button></a>
+<a href="{{ route('nodes.menu') }}"><button>Home</button></a>
+<a href="{{ route('nodes.info', $id) }}"><button>Info</button></a>

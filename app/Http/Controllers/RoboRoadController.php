@@ -29,7 +29,7 @@ class RoboRoadController extends Controller
 
     public function ViewStream($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
-        if ( !$checkNodeIdExist ) { return redirect('/'); }
+        if ( !$checkNodeIdExist ) { return redirect(route('nodes.menu')); }
         $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         $streamUrl='http://' . $NodeAddress . '/video_feed';
         return view('VideoStream', compact('id', 'streamUrl'));

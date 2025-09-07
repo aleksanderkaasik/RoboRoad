@@ -9,7 +9,7 @@
     <nav>
         <ul>
             <?php foreach ($Nodes as $Node) { ?>
-                <li><a href="/stream/{{$Node['NodeId']}}">{{ $Node['NodeName'] }}</a></li>
+                <li><a href="{{ route('nodes.preview', $Node['NodeID'])}}">{{ $Node['NodeName'] }}</a></li>
             <?php } ?>
         </ul>
     </nav>

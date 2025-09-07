@@ -2,12 +2,12 @@
     Loading system info...
 </div>
 
-<a href="/"><button>Home</button></a>
-<a href="/stream/{{ $id }}"><button>Stream</button></a>
+<a href="{{ route('nodes.menu') }}"><button>Home</button></a>
+<a href="{{ route('nodes.preview', $id) }}"><button>Stream</button></a>
 
 <script>
     function updateSystemInfo() {
-        fetch(`/system-info/{{ $id }}`)
+        fetch(` {{ route('nodes.system.info', $id) }}`)
             .then(response => response.json())
             .then(data => {
                 const infoDiv = document.getElementById('system-info');
