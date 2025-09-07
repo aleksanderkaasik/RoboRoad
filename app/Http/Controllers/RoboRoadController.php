@@ -14,21 +14,26 @@ class RoboRoadController extends Controller
 
     public function Index() {
         //$NodeIds = RoboRoadNodes::pluck('NodeID');
-        $Nodes=RoboRoadNodes::select('NodeID', 'NodeName')->get();
-        return view('Index', compact('Nodes'));
+        $nodes = RoboRoadNodes::select('NodeID', 'NodeName')->get();
+
+        return view('Index', compact('nodes'));
     }
 
-    public function getStreamPreviewPage($id) {
-        $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
-        if ( !$checkNodeIdExist ) { return redirect(route('nodes.index')); }
-        $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
-        $streamUrl='http://' . $NodeAddress . '/video_feed';
-        return view('VideoStream', compact('id', 'streamUrl'));
+    public function getStreamPreviewPage($nodeId) {
+        $doesNodeExists = (bool)RoboRoadNodes::where('NodeID', $nodeId)->value('NodeID');
+
+        if ( !$doesNodeExists  ) { return redirect(route('nodes.index')); }
+
+        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
+        $streamUrl = 'http://' . $nodeAddress  . '/video_feed';
+
+        return view('VideoStream', compact('nodeId', 'streamUrl'));
     }
 
-    public function getNodeStatusPage($id) {
-        $nodeName = RoboRoadNodes::where('NodeID', $id)->value('NodeName');
-        return view('SystemInfoPage', compact('id', 'nodeName') );
+    public function getNodeStatusPage($nodeId) {
+        $nodeName = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeName');
+
+        return view('SystemInfoPage', compact('nodeId', 'nodeName') );
     }
     
     public function getCreateNodePage(){
@@ -37,11 +42,11 @@ class RoboRoadController extends Controller
 
     #-------- API calls --------   
 
-    public function ProxiedVideoStream($id)
+    public function getProxiedStream($nodeId)
     {
-        $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
         
-        $streamUrl='http://' . $NodeAddress . '/video_feed';
+        $streamUrl = 'http://' . $nodeAddress . '/video_feed';
 
         $response = Http::withOptions([
             'stream' => true,
@@ -63,24 +68,24 @@ class RoboRoadController extends Controller
         ]);
     } 
 
-    public function getNodeSystemInfo($id)
+    public function getNodeSystemInfo($nodeId)
     {
-        $nodeAddress = RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
+        $nodeAddress = RoboRoadNodes::where('NodeID', $nodeId)->value('NodeAddress');
         $response = Http::get("http://$nodeAddress/system_info");
         return $response->json();
     }
 
     public function createNode(Request $request)
     {
-        $RoboRoadNodes = RoboRoadNodes::create([
+        $node  = RoboRoadNodes::create([
             'NodeName'=> $request['NodeName'],
             'NodeAddress'=> $request['NodeAddress']
         ]);
 
         return response()->json([
             'success' => true,
-            'RoboRoadNodes'    => $RoboRoadNodes,
-            'message' => 'User created successfully',
+            'node'    => $node ,
+            'message' => 'node created successfully',
             
         ], 201);
     }

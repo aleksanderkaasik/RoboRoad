@@ -3,11 +3,11 @@
 </div>
 
 <a href="{{ route('nodes.index') }}"><button>Home</button></a>
-<a href="{{ route('nodes.stream', $id) }}"><button>Stream</button></a>
+<a href="{{ route('nodes.stream', $nodeId) }}"><button>Stream</button></a>
 
 <script>
     function updateSystemInfo() {
-        fetch(` {{ route('nodes.system-info', $id) }}`)
+        fetch(` {{ route('nodes.system-info', $nodeId) }}`)
             .then(response => response.json())
             .then(data => {
                 const infoDiv = document.getElementById('system-info');
