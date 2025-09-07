@@ -18,17 +18,17 @@ class RoboRoadController extends Controller
         return view('Index', compact('Nodes'));
     }
 
-    public function getNodeStatusPage($id) {
-        $nodeName = RoboRoadNodes::where('NodeID', $id)->value('NodeName');
-        return view('SystemInfoPage', compact('id', 'nodeName') );
-    }
-
     public function getStreamPreviewPage($id) {
         $checkNodeIdExist=(bool)RoboRoadNodes::where('NodeID', $id)->value('NodeID');
         if ( !$checkNodeIdExist ) { return redirect(route('nodes.index')); }
         $NodeAddress=RoboRoadNodes::where('NodeID', $id)->value('NodeAddress');
         $streamUrl='http://' . $NodeAddress . '/video_feed';
         return view('VideoStream', compact('id', 'streamUrl'));
+    }
+
+    public function getNodeStatusPage($id) {
+        $nodeName = RoboRoadNodes::where('NodeID', $id)->value('NodeName');
+        return view('SystemInfoPage', compact('id', 'nodeName') );
     }
     
     public function getCreateNodePage(){
