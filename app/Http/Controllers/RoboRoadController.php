@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Models\RoboRoadNodes;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 
 class RoboRoadController extends Controller
 {
@@ -118,7 +120,7 @@ class RoboRoadController extends Controller
         if (!$node) {
             return response()->json([
                 'success' => false,
-                'message' => 'Couldn\'t find nodd',
+                'message' => 'Couldn\'t find nodd to delete',
             ], 404);
         }
 
@@ -135,11 +137,47 @@ class RoboRoadController extends Controller
 
     public function updateNode(Request $request, $nodeId)
     {
-        $node = RoboRoadNodes::find($nodeId);
-        $node['NodeName'] = $request['NodeName'];
-        $node['NodeAddress'] = $request['NodeAddress'];
+        try {
+            $node = RoboRoadNodes::find($nodeId);
+        } catch (\Throwable $error) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while getting node or having database connection issue',
+                'error'   => $error->getMessage()
+            ], 500);
+        }
+       
+        if (!$node) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Couldn\'t find nodd to update',
+            ], 404);
+        }
+
+        if ( empty($request['NodeName']) && empty($request['NodeAddress']) ){
+            return response()->json([
+                'success' => true,
+                'message' => 'No values were added',
+                
+            ], status: 400);
+        }
+        
+        if ( !empty($request['NodeName']) ) {
+            $node['NodeName'] = $request['NodeName'];
+        }
+
+        if ( !empty($request['NodeAddress']) ) {
+            $node['NodeAddress'] = $request['NodeAddress'];
+        }
+
         $node->save();
 
-        return redirect()->route('nodes.index')->with('success', 'Item updated successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'node update successfully',
+            
+        ], 200);
+
+        //return redirect()->route('nodes.index')->with('success', 'Item updated successfully');
     }
 }
