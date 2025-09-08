@@ -92,10 +92,24 @@ class RoboRoadController extends Controller
 
     public function createNode(Request $request)
     {
-        $node  = RoboRoadNodes::create([
-            'NodeName'=> $request['NodeName'],
-            'NodeAddress'=> $request['NodeAddress']
-        ]);
+        if ( empty($request['NodeName']) or empty($request['NodeAddress']) ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Missing values',
+            ], 404);
+        }
+        try {
+            $node  = RoboRoadNodes::create([
+                'NodeName'=> $request['NodeName'],
+                'NodeAddress'=> $request['NodeAddress']
+            ]);
+        } catch (\Throwable $error) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while creatomg node, having database connection issue',
+                'error'   => $error->getMessage()
+            ], 500);
+        }
 
         return response()->json([
             'success' => true,
@@ -159,7 +173,7 @@ class RoboRoadController extends Controller
                 'success' => true,
                 'message' => 'No values were added',
                 
-            ], status: 400);
+            ], status: 400  );
         }
         
         if ( !empty($request['NodeName']) ) {
