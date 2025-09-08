@@ -85,9 +85,35 @@ class RoboRoadController extends Controller
 
     public function getNodeSystemInfo($nodeId)
     {
-        $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
-        $response = Http::get("http://$nodeAddress/system_info");
-        return $response->json();
+        try {
+            $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
+        } catch (\Throwable $error) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while creatomg node, having database connection issue',
+                'error'   => $error->getMessage()
+            ], 500);
+        }
+
+        try {
+            $response = Http::timeout(5)->get("http://$nodeAddress/system_info");
+    
+            if (!$response->successful()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => "Failed to retrieve system info from $nodeAddress.", 
+                ],502);
+            }
+    
+            return response()->json($response->json(), 200);
+    
+        } catch (\Exception $e) {
+            // Handle connection errors, timeouts, etc.
+            return response()->json([
+                'success' => false,
+                'error' => "Exception occurred while connecting to node: " . $e->getMessage()
+            ], 500); // Internal Server Error
+        }
     }
 
     public function createNode(Request $request)
