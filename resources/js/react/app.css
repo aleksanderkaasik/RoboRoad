@@ -23,13 +23,20 @@ body, html, #root {
 }
 
 .sidebar-item {
-    padding: 12px;
-    border-bottom: 1px solid #333;
+    padding: 10px;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .sidebar-item:hover {
-    background-color: #2e2e2e;
+    background-color: #f0f0f0;
+}
+
+.sidebar-item.selected {
+
+    color: #a020f0;
+    font-size: 32px;
+
 }
 
 .sidebar-logo{
@@ -84,7 +91,6 @@ body, html, #root {
 .tab.active {
     border-bottom: 3px solid #a020f0;
     color: #a020f0;
-    font-size: 24px;
 }
 
 .tab:hover {

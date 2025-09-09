@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "./sidebar.jsx";
 import MainContent from "./MainContent.jsx";
 
-const TabContent = ({ activeTab }) => {
+const TabContent = ({ activeTab, data, selectedNode }) => {
     const [systemInfo, setSystemInfo] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -11,8 +11,18 @@ const TabContent = ({ activeTab }) => {
         <div className="content-body">
             {activeTab === 0 && (
                 <div>
-                    <h2>Tab 1 Content</h2>
-                    <p>This is the content of Tab 1.</p>
+                    {selectedNode ? (
+                        <p>
+                            Selected Node ID: {selectedNode.NodeId}
+                            <br/>
+                            Selected Node Name: {selectedNode.NodeName}
+                            <br/>
+                            Selected Node Address: {selectedNode.NodeAddress}
+                        </p>
+
+                    ) : (
+                        <p>No node selected.</p>
+                    )}
                 </div>
             )}
 
