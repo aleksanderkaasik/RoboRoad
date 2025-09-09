@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
-const ListNodes = () => {
+const ListNodes = ({ nodes = [], onNodeSelect, selectedNode }) => {
     return (
         <div className="scrollable-content">
-            {Array.from({ length: 100 }).map((_, idx) => (
-                <div key={idx} className="sidebar-item">Item {idx + 1}</div>
+            {nodes.map(node => (
+                <div
+                    key={node.NodeId}
+                    className={`sidebar-item ${selectedNode?.NodeId === node.NodeId ? 'selected' : ''}`}
+                    onClick={() => onNodeSelect(node)}
+                >
+                    {node.NodeName}
+                </div>
             ))}
         </div>
     );
