@@ -52,6 +52,10 @@ body, html, #root {
     background-color: #1e1e1e;
 }
 
+.main-content-title {
+    font-size: 32px;
+}
+
 .tab-menu {
     display: flex;
     justify-content: space-between;
