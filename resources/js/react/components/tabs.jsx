@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Tabs = ({ activeTab, onTabClick }) => {
-    const tabList = ['Tab 1', 'Tab 2'];
+    const tabList = ['Info', 'Video'];
     return (
         <div className="tab-menu">
             <div className="tabs">
