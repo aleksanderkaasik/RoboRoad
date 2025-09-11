@@ -73,7 +73,7 @@ const TabContent = ({ activeTab, data, selectedNode }) => {
 
                     {selectedNode && (
                         <div>
-                            <img src={`http://${selectedNode.NodeAddress}/video_feed`} alt="Failed connected" />
+                            <img key={selectedNode.NodeId} src={`http://${selectedNode.NodeAddress}/video_feed`} alt="Failed connected" />
                         </div>
                     )}
                 </div>
