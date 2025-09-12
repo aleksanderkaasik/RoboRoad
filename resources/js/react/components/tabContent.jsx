@@ -57,9 +57,15 @@ const TabContent = ({ activeTab, data, selectedNode }) => {
                             {loading && <p>Loading...</p>}
                             {error && <p style={{ color: 'red' }}>Error: {error}</p>}
                             {systemInfo && (
-                                <pre style={{ background: '#111', color: '#fff', padding: '1em', borderRadius: '8px' }}>
-                                    {JSON.stringify(systemInfo, null, 2)}
-                                </pre>
+                                <div>
+                                        <p>CPU: Out {systemInfo.cpu.cores} cores, {systemInfo.cpu.percent}% are being used </p>
+                                        <p>Disk: {systemInfo.disk.used}/{systemInfo.disk.total} ({systemInfo.disk.percent}%)</p>
+                                        <p>Memery: {systemInfo.ram.used}/{systemInfo.ram.total} ({systemInfo.ram.percent}%)</p>
+
+                                        <br/>
+
+                                        <p>Uptime: {systemInfo.uptime}</p>
+                                </div>
                             )}
                         </div>
                     )}
