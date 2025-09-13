@@ -29,7 +29,7 @@ body, html, #root {
 }
 
 .sidebar-item:hover {
-    background-color: #f0f0f0;
+    background-color: #474747;
 }
 
 .sidebar-item.selected {
