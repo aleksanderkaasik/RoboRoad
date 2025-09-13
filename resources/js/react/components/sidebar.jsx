@@ -4,7 +4,7 @@ import ListNodes from './listNodes.jsx';
 import Logo from './logo.jsx';
 import NodeSearch from './NodeSearch.jsx';
 
-const Sidebar = ({ data, onNodeSelect, selectedNode }) => {
+const Sidebar = ({ data, onNodeSelect, selectedNode, refreshData }) => {
 
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -26,6 +26,7 @@ const Sidebar = ({ data, onNodeSelect, selectedNode }) => {
                 nodes={filteredNodes}
                 onNodeSelect={onNodeSelect}
                 selectedNode={selectedNode}
+                refreshData={refreshData}
             />
         </div>
     );

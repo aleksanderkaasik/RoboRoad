@@ -9,37 +9,33 @@ import './app.css';
 function App() {
     const [laravelData, setLaravelData] = useState([]);
     const [selectedNode, setSelectedNode] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Fetch the node data from the API
-        const fetchNodes = async () => {
-            try {
-                const response = await fetch('http://roboroad.loc/api/nodes');
-                const data = await response.json();
+    // Consolidated function to fetch node data
+    const fetchNodes = async () => {
+        try {
+            const response = await fetch('http://roboroad.loc/api/nodes');
 
-                if (!data.success) {
-                    throw new Error(`HTTP ${data.message}`);
-                }
-                setLaravelData(data.nodes);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error('Failed to fetch data');
             }
-        };
 
+            setLaravelData(data.nodes);  // Update the state with the fetched data
+        } catch (error) {
+            console.error('Error fetching nodes:', error);
+        }
+    };
+
+    // Fetch data on initial load
+    useEffect(() => {
         fetchNodes();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div style={{ color: 'red' }}>Error: {error}</div>;
-    }
+    // Function to refresh data manually
+    const refreshData = () => {
+        fetchNodes();
+    };
 
     return (
         <div className="App">
@@ -47,6 +43,7 @@ function App() {
                 data={laravelData}
                 onNodeSelect={setSelectedNode}
                 selectedNode={selectedNode}
+                refreshData={refreshData}
             />
             <MainContent data={laravelData} selectedNode={selectedNode} />
         </div>
