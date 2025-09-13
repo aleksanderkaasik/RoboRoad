@@ -1,32 +1,35 @@
 // ListNodes.js
 import React, { useState, useEffect, useRef } from 'react';
 import DeleteConfirmationModal from './DeleteConfirmation.jsx';
+import Edit from './Editing.jsx';
 
 const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
     const [menuOpen, setMenuOpen] = useState(null);
     const [nodeToDelete, setNodeToDelete] = useState(null);
+    const [nodeToEdit, setNodeToEdit] = useState(null);
 
     const modalRef = useRef(null);
     const menuRef = useRef(null);
 
     const handleOutsideClick = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
-            setNodeToDelete(null); // Close modal if clicked outside
+            setNodeToDelete(null);
+            setNodeToEdit(null);
         }
         if (menuRef.current && !menuRef.current.contains(e.target)) {
-            setMenuOpen(null); // Close menu if clicked outside
+            setMenuOpen(null);
         }
     };
 
     useEffect(() => {
-        if (nodeToDelete || menuOpen !== null) {
+        if (nodeToDelete || nodeToEdit || menuOpen !== null) {
             document.addEventListener('mousedown', handleOutsideClick);
         }
 
         return () => {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
-    }, [nodeToDelete, menuOpen]);
+    }, [nodeToDelete, nodeToEdit, menuOpen]);
 
     const handleMenuToggle = (nodeId) => {
         setMenuOpen(prev => (prev === nodeId ? null : nodeId));
@@ -34,7 +37,12 @@ const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
 
     const handleDeleteClick = (node) => {
         setNodeToDelete(node);
-        setMenuOpen(null); // Close the dropdown
+        setMenuOpen(null);
+    };
+
+    const handleEditClick = (node) => {
+        setNodeToEdit(node);
+        setMenuOpen(null);
     };
 
     const handleConfirmDelete = async (nodeId) => {
@@ -48,8 +56,8 @@ const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
                 throw new Error('Failed to delete node');
             }
 
-            refreshData(); // Call parent refresh
-            setNodeToDelete(null); // Close modal
+            refreshData();
+            setNodeToDelete(null);
         } catch (error) {
             console.error('Error deleting node:', error);
         }
@@ -84,11 +92,8 @@ const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
                                 </button>
                                 {menuOpen === node.NodeId && (
                                     <div className="dropdown-menu">
-                                        <button onClick={() => console.log('Update')}>Update</button>
-                                        <button onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeleteClick(node);
-                                        }}>Delete</button>
+                                        <button onClick={() => handleEditClick(node)}>Update</button>
+                                        <button onClick={() => handleDeleteClick(node)}>Delete</button>
                                     </div>
                                 )}
                             </div>
@@ -97,12 +102,24 @@ const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
                 })
             )}
 
+            {/* Delete Modal */}
             {nodeToDelete && (
                 <div ref={modalRef}>
                     <DeleteConfirmationModal
                         node={nodeToDelete}
                         onConfirm={handleConfirmDelete}
                         onCancel={() => setNodeToDelete(null)}
+                    />
+                </div>
+            )}
+
+            {/* Edit Modal */}
+            {nodeToEdit && (
+                <div ref={modalRef}>
+                    <Edit
+                        node={nodeToEdit}
+                        onUpdate={refreshData}
+                        onCancel={() => setNodeToEdit(null)}
                     />
                 </div>
             )}
