@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import Sidebar from './components/sidebar.jsx';
+import Sidebar from './components/Sidebar.jsx';
 import MainContent from './components/MainContent.jsx';
 
 import './app.css';
