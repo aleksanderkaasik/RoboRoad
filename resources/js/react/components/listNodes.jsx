@@ -47,7 +47,7 @@ const ListNodes = ({ nodes = [], onNodeSelect, selectedNode, refreshData }) => {
 
     const handleConfirmDelete = async (nodeId) => {
         try {
-            const response = await fetch(`http://roboroad.loc/api/nodes/${nodeId}`, {
+            const response = await fetch(route('nodes.deletion', {id: `${nodeId}`}), {
                 method: 'DELETE',
             });
             const data = await response.json();

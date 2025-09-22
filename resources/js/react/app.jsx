@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
+import { route } from 'ziggy-js';
+
 import Sidebar from './components/Sidebar.jsx';
 import MainContent from './components/MainContent.jsx';
 
@@ -13,7 +15,7 @@ function App() {
     // Consolidated function to fetch node data
     const fetchNodes = async () => {
         try {
-            const response = await fetch('http://roboroad.loc/api/nodes');
+            const response = await fetch(route('nodes.fetch'));
 
             const data = await response.json();
 

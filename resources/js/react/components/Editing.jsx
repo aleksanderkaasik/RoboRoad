@@ -19,7 +19,7 @@ const Editing = ({ node, onUpdate, onCancel }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://roboroad.loc/api/nodes/${node.NodeId}`, {
+            const response = await fetch(route('nodes.modifying', {id: `${node.NodeId}`}), {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,7 +36,6 @@ const Editing = ({ node, onUpdate, onCancel }) => {
 
         } catch (error) {
             console.error('Error updating node:', error);
-            // Optional: Add error handling UI
         }
     };
 
