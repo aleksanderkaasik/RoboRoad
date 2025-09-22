@@ -16,9 +16,9 @@ class RoboRoadController extends Controller
 
     public function Index() {
         //$NodeIds = RoboRoadNodes::pluck('NodeId');
-        $nodes = RoboRoadNodes::select('NodeId', 'NodeName')->get();
-
-        return view('Index', compact('nodes'));
+        //$nodes = RoboRoadNodes::select('NodeId', 'NodeName')->get();
+        //return view('Index', compact('nodes'));
+        return view('Index');
     }
 
     public function getStreamPreviewPage($nodeId) {
@@ -62,7 +62,7 @@ class RoboRoadController extends Controller
         $nodeAddress = RoboRoadNodes::where('NodeId', $nodeId)->value('NodeAddress');
         
         $streamUrl = 'http://' . $nodeAddress . '/video_feed';
-
+        
         $response = Http::withOptions([
             'stream' => true,
         ])->get($streamUrl);
@@ -219,5 +219,31 @@ class RoboRoadController extends Controller
         ], 200);
 
         //return redirect()->route('nodes.index')->with('success', 'Item updated successfully');
+    }
+
+    public function getNode(){
+        try {
+            $nodes = RoboRoadNodes::select('NodeId', 'NodeName', 'NodeAddress')->get();
+        } catch (\Throwable $error) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while getting node or having database connection issue',
+                'error'   => $error->getMessage()
+            ], 500);
+        }
+
+        if (!$nodes) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Couldn\'t find nodd to update',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'nodes'    => $nodes ,
+            'message' => 'node created successfully',
+
+        ], 201);
     }
 }
