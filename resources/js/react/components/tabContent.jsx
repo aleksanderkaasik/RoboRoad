@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const TabContent = ({ activeTab, data, selectedNode }) => {
+const TabContent = ({ activeTab, selectedNode }) => {
     const [systemInfo, setSystemInfo] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ const TabContent = ({ activeTab, data, selectedNode }) => {
 
             setLoading(true);
             setError(null);
-            setSystemInfo(null); // Optional: clear old data
+            setSystemInfo(null);
 
             try {
                 const response = await fetch(`http://${selectedNode.NodeAddress}/system_info`);
@@ -31,14 +31,10 @@ const TabContent = ({ activeTab, data, selectedNode }) => {
             }
         };
 
-        // Initial fetch if on Tab 3 and node is selected
         if (activeTab === 0 && selectedNode?.NodeAddress) {
             fetchSystemInfo();
-
-            // Set up interval for auto-refresh every 10 minutes
         }
 
-        // Cleanup interval on tab/node change or unmount
         return () => {
             if (interval) clearInterval(interval);
         };

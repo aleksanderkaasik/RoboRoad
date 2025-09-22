@@ -10,7 +10,7 @@ const MainContent = ({data, selectedNode }) => {
     return (
         <div className="main-content">
             <Tabs activeTab={activeTab} onTabClick={setActiveTab} />
-            <TabContent activeTab={activeTab} data={extractedNodes} selectedNode={selectedNode} />
+            <TabContent activeTab={activeTab} selectedNode={selectedNode} />
         </div>
     );
 };
