@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
-const Sidebar = () => {
+import ListNodes from './listNodes.jsx';
+import Logo from './logo.jsx';
+import NodeSearch from './NodeSearch.jsx';
+
+const Sidebar = ({ data, onNodeSelect, selectedNode, refreshData }) => {
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredNodes = data.filter(node =>
+        node.NodeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        node.NodeAddress.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="Sidebar">
-            <div className="sidebar-content">
-                {Array.from({ length: 40 }).map((_, idx) => (
-                    <div key={idx} className="sidebar-item">Item {idx + 1}</div>
-                ))}
-            </div>
+            <Logo />
+
+            <NodeSearch
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
+
+            <ListNodes
+                nodes={filteredNodes}
+                onNodeSelect={onNodeSelect}
+                selectedNode={selectedNode}
+                refreshData={refreshData}
+            />
         </div>
     );
 };
+
 
 export default Sidebar;
