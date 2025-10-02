@@ -1,3 +1,4 @@
+
 ## Prerequisite
 
 Before running the application, you need to install needed package to install needed or run code base.
@@ -14,9 +15,9 @@ Installing package manager, but for the composer package, you need to install it
 ```
 sudo apt install -y npm php8.3 php8.3-zip php8.3-zip php8.3-sqlite3 php8.3-pgsql php8.3-mysql php8.3-mbstring
 ```
-
 ## Installing need dependencies for the project
 ### Installing FrontEnd dependencies for ReactJs/Javascript
+
 on Linux
 ```
 npm install
@@ -39,7 +40,7 @@ php artions serve --port 8484
 ```
 
 
-Installing on ubuntu for external access, to the panel.
+Installing web server on ubuntu for external access, to the panel.
 ```
 sudo apt install -y apache2
 ```
